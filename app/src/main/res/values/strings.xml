@@ -1,0 +1,18 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Skynet Phishing Task</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="text_title_enter_url">Enter URL</string>
+    <string name="text_title_submit">Submit</string>
+
+    <string name="api_response_result"><b>URL : </b><xliff:g example="url:" id="url">%s</xliff:g>
+        \n\n<b>In Database : </b><xliff:g example="In Database" id="in_database">%s</xliff:g>
+        \n\n<b>Phish ID : </b><xliff:g example="Phish ID" id="phish_id">%s</xliff:g>
+        \n\n<b>Phish Detail Page : </b><xliff:g example="In Database" id="phish_detail_page">%s</xliff:g>
+        \n\n<b>Verified : </b><xliff:g example="In Database" id="verified">%s</xliff:g>
+        \n\n<b>Verified at : </b><xliff:g example="In Database" id="verified_at">%s</xliff:g>
+        \n\n<b>Valid : </b><xliff:g example="In Database" id="valid">%s</xliff:g>
+    </string>
+    <string name="text_title_result">Result</string>
+</resources>
