@@ -5,8 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.webkit.URLUtil
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -20,7 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickListener  {
+class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickListener {
 
     private lateinit var mConstraintLayoutCheckURL: ConstraintLayout
 
@@ -80,18 +82,23 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
         mURL = mTextInputEditTextCheckURLEnterURL.text.toString()
         if (mURL.isEmpty()) {
             mTextInputLayoutCheckURLEnterURL.isErrorEnabled
-            mTextInputLayoutCheckURLEnterURL.error = "Field can't be empty"
+            mTextInputLayoutCheckURLEnterURL.error = getString(R.string.text_string_field_cant_be_empty)
         } else {
-            fetchData()
+            if (URLUtil.isValidUrl(mURL) && Patterns.WEB_URL.matcher(mURL).matches()) {
+                mTextInputLayoutCheckURLEnterURL.isErrorEnabled = false
+                fetchData()
+            } else {
+                mTextInputLayoutCheckURLEnterURL.isErrorEnabled
+                mTextInputLayoutCheckURLEnterURL.error = getString(R.string.text_string_please_enter_valid_url)
+            }
         }
     }
 
-    fun fetchData(){
+    fun fetchData() {
         if (connected) {
-
             val progressDialog = ProgressDialog(context)
-            progressDialog.setTitle("Sign Up")
-            progressDialog.setMessage("Please wait, this may take while...")
+            progressDialog.setTitle(getString(R.string.text_title_extracting_details))
+            progressDialog.setMessage(getString(R.string.text_sring_please_wait_this_may_take_while))
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.setCancelable(false)
             progressDialog.show()
@@ -99,13 +106,13 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
             APIClient.instance.checkURL(
                 mURL,
                 "json"
-            ).enqueue(object  : Callback<ResponseModel>{
+            ).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(
                     call: Call<ResponseModel>,
                     response: Response<ResponseModel>
                 ) {
                     progressDialog.dismiss()
-                    val mResponseModel : ResponseModel = response.body() as ResponseModel
+                    val mResponseModel: ResponseModel = response.body() as ResponseModel
                     mTextViewCheckURLResponse.text = getString(
                         R.string.api_response_result,
                         mResponseModel.results.url,

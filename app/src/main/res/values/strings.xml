@@ -15,4 +15,8 @@
         \n\n<b>Valid : </b><xliff:g example="In Database" id="valid">%s</xliff:g>
     </string>
     <string name="text_title_result">Result</string>
+    <string name="text_string_field_cant_be_empty">Field can\'t be empty</string>
+    <string name="text_string_please_enter_valid_url">Please enter valid URL</string>
+    <string name="text_title_extracting_details">Extracting Details</string>
+    <string name="text_sring_please_wait_this_may_take_while">Please wait, this may take while...</string>
 </resources>
