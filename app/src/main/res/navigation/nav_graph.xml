@@ -9,5 +9,10 @@
         android:id="@+id/checkURLFragment"
         android:name="com.android.skynetphishingtask.fragments.CheckURLFragment"
         android:label="fragment_check_u_r_l"
-        tools:layout="@layout/fragment_check_u_r_l" />
+        tools:layout="@layout/fragment_check_u_r_l" >
+        <argument
+            android:name="sharedText"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
 </navigation>

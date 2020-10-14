@@ -1,18 +1,22 @@
 package com.android.skynetphishingtask.fragments
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.android.skynetphishingtask.R
 import com.android.skynetphishingtask.models.ResponseModel
 import com.android.skynetphishingtask.networks.APIClient
@@ -21,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickListener {
 
@@ -42,6 +47,10 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val mArgs: CheckURLFragmentArgs by navArgs()
+        val text = mArgs.sharedText
+
+
         mConstraintLayoutCheckURL = view.findViewById(R.id.constraintLayoutCheckURL)
 
         mTextInputLayoutCheckURLEnterURL = view.findViewById(R.id.textInputLayoutCheckURLEnterURL)
@@ -55,6 +64,14 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
 
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (!text.equals("")){
+            mTextInputEditTextCheckURLEnterURL.setText(text, TextView.BufferType.EDITABLE)
+        }
+        else{
+            mTextInputEditTextCheckURLEnterURL.setText("", TextView.BufferType.EDITABLE)
+        }
+
 
     }
 
@@ -82,14 +99,16 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
         mURL = mTextInputEditTextCheckURLEnterURL.text.toString()
         if (mURL.isEmpty()) {
             mTextInputLayoutCheckURLEnterURL.isErrorEnabled
-            mTextInputLayoutCheckURLEnterURL.error = getString(R.string.text_string_field_cant_be_empty)
+            mTextInputLayoutCheckURLEnterURL.error =
+                getString(R.string.text_string_field_cant_be_empty)
         } else {
             if (URLUtil.isValidUrl(mURL) && Patterns.WEB_URL.matcher(mURL).matches()) {
                 mTextInputLayoutCheckURLEnterURL.isErrorEnabled = false
                 fetchData()
             } else {
                 mTextInputLayoutCheckURLEnterURL.isErrorEnabled
-                mTextInputLayoutCheckURLEnterURL.error = getString(R.string.text_string_please_enter_valid_url)
+                mTextInputLayoutCheckURLEnterURL.error =
+                    getString(R.string.text_string_please_enter_valid_url)
             }
         }
     }
@@ -102,6 +121,9 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.setCancelable(false)
             progressDialog.show()
+
+            val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
             APIClient.instance.checkURL(
                 mURL,
@@ -140,5 +162,10 @@ class CheckURLFragment : Fragment(R.layout.fragment_check_u_r_l), View.OnClickLi
             ).show()
         }
 
+    }
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

@@ -19,4 +19,5 @@
     <string name="text_string_please_enter_valid_url">Please enter valid URL</string>
     <string name="text_title_extracting_details">Extracting Details</string>
     <string name="text_sring_please_wait_this_may_take_while">Please wait, this may take while...</string>
+    <string name="text_key_shared_text">sharedText</string>
 </resources>
